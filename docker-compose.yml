@@ -1,0 +1,65 @@
+version: "3.9"
+
+services:
+  zookeeper:
+    image: wurstmeister/zookeeper
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    restart: always
+
+  kafka:
+    image: wurstmeister/kafka
+    container_name: kafka
+    ports:
+      - 9092:9092
+    restart: always
+    environment:
+      KAFKA_LISTENERS: PLAINTEXT://:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    depends_on:
+      - zookeeper
+  
+
+  user-service:
+    build: ./user-service
+    container_name: user-service
+    ports:
+      - "3000:3000"
+    environment:
+      APP_SECRET: "barkat"
+      MONGODB_URI: "mongodb://mongodb:27017/clean-user"
+      PORT: 3000
+    depends_on:
+      - kafka
+
+
+  product-service:
+    build: ./product-service
+    container_name: product-service
+    ports:
+      - "4001:4000"
+    environment:
+      APP_SECRET: "barkat"
+      MONGODB_URI: "mongodb://mongodb:27017/clean-product"
+      PORT: 4000
+    depends_on:
+      - kafka
+  
+
+  order-service:
+    build: ./order-service
+    container_name: order-service
+    ports:
+      - "6100:6000"
+    environment:
+      APP_SECRET: "barkat"
+      MONGODB_URI: "mongodb://mongodb:27017/clean-order"
+      PORT: 6000
+    depends_on:
+      - kafka
+   
+      
+
