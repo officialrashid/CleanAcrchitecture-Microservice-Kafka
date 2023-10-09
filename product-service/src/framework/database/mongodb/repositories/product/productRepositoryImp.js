@@ -19,28 +19,28 @@ const productRepositoryImp = () => {
     }
   };
 
-  const orderedProducts = async (productId, userId,address) => {
-    try {
-      console.log(productId, userId,address, "user implement buy productsss");
+  
+const orderedProducts = async (productId, userId, address) => {
+  try {
+      console.log(productId, userId, address, "user implement buy products");
       const products = await productDatas.find({ _id: { $in: productId } });
       console.log(products, "ppppppppppppppppp");
-       let orderData = {
+      let orderData = {
           products,
-           userId,
-           address
-       }
-       console.log(orderData);
-      await productProducer(orderData, 'order', 'orderedProducts').then((response)=>{
-                
-      }).catch((err)=>{
-        console.log(err,"errr in teh productProducer call");
-      })
+          userId,
+          address
+      };
+      console.log(orderData);
 
-    } catch (error) {
+      // Call the productProducer function and await its response
+      await productProducer(orderData, 'order', 'orderedProducts');
+      return orderData
+  // Return the response from orderedProducts
+  } catch (error) {
       console.error("Error in orderedProducts:", error);
-      throw error; // Rethrow the error to be handled in the calling function
-    }
+      throw error; // Throw the error to be caught by the caller
   }
+};
   const getProducts = async() =>{
       
     try{
@@ -66,7 +66,8 @@ const productRepositoryImp = () => {
     addedProduct,
     orderedProducts,
     getProducts,
-    productDetails
+    productDetails,
+    
   };
 };
 

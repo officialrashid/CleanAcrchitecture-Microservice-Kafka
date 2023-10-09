@@ -5,6 +5,9 @@ import {kafka} from "../config/kafkaClient.js"
 const producer = kafka.producer()
 
 export const orderProducer = async (sendData,topic,type)=>{
+    console.log(sendData);
+    console.log(topic,"sdbfsbjhf");
+    console.log(type),"sjsjhhjvhsv";
 
     try{
         if(!sendData){

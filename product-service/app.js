@@ -5,6 +5,7 @@ import getDb from "./src/framework/database/connection.js";
 import config from "./src/config/productServConfig.js";
 import expressConfig from "./src/framework/webServer/express.js";
 import routes from "./src/framework/webServer/routes/index.js";
+import { consumeProduct } from "./src/event/productConsumer.js";
 // import {productConsumer} from "./src/event/productConsumer.js"
 // Create an Express app instance
 const app = express();
@@ -26,4 +27,5 @@ routes(app, express);
 
 // Start the server
 serverConfig(server, config).startServer();
-//  await productConsumer()
+
+await consumeProduct()

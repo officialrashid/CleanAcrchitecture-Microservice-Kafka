@@ -3,26 +3,16 @@ import orderRepositoriInf from '../application/repositories/order/orderRepositor
 import orderRepositoryImp from '../framework/database/mongodb/repositories/order/orderRepositoryImp.js';
 
 const orderDbRepository = orderRepositoriInf(orderRepositoryImp());
-export const handleMessage = async (data,type) =>{
-    let products = data.products
-    let userId = data.userId
-    let address = data.address
-    console.log(products,";;;;;");
-    console.log(userId,"::::");
-    console.log(address,">>>>>>>>");
-      try{
-          
-        if(type === "orderedProducts"){
 
-            await createOrder(products,userId,address,orderDbRepository).then((response)=>{
-              console.log(response,"{}{}{}{}{}{}{}{}{}{}{}{}{}");
-              if(response){
-                return response;
-              }
-            })
+export const handleMessage = async (data, type) => {
+    try {
+        if (type === "orderedProducts") {
+            const response = await createOrder(data.products, data.userId, data.address, orderDbRepository);
+            console.log("response in handle message", response);
+            return response;
         }
-      } catch(error){
-        console.log(error,"error in the order Handle message");
-      }
-   
-}
+    } catch (error) {
+        console.error("Error in handleMessage:", error);
+        return null; // Handle the error appropriately
+    }
+};

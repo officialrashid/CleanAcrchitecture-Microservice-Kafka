@@ -1,5 +1,6 @@
 import { kafka } from "../config/kafkaClient.js";
 import { handleMessage } from "../event/handleMessages.js";
+import {orderProducer} from "../event/orderProducer.js"
 const consumer = kafka.consumer({
     groupId: 'order-service'
 });
@@ -9,24 +10,30 @@ export const consumeOrder = async () => {
     try {
         await consumer.connect();
         console.log('Consumer connected');
-        
+
         await consumer.subscribe({ topic: 'order', fromBeginning: true });
         await consumer.run({
             eachMessage: async ({ message }) => {
-                console.log(message,"ooooooooooooooooooooo");
-                console.log(message.value,"ooooooooooooooooooooo1111111111111");
+                console.log(message, "ooooooooooooooooooooo");
+                console.log(message.value, "ooooooooooooooooooooo1111111111111");
                 const binaryData = message.value;
                 const jsonString = binaryData.toString(); // Convert binary data to a string
-                console.log(jsonString,"after convert to string");
+                console.log(jsonString, "after convert to string");
                 const jsonData = JSON.parse(jsonString); // Parse the string as JSON
                 console.log("Received JSON data:", jsonData.data);
-                
+
                 const messageType = jsonData.type;
                 console.log("Received message type:", messageType);
-                // Handle the JSON data as needed
-                const response = await handleMessage(jsonData.data,messageType)
-                    console.log("response in handle message",response);
-             
+
+                // Call handleMessage and wait for it to complete
+                const response = await handleMessage(jsonData.data, messageType);
+
+                console.log("response in handle message", response);
+
+                // Further processing or logging based on the response
+                if (response) {
+                    await orderProducer(response,'product','successOrdered')
+                }
             }
         });
     } catch (err) {

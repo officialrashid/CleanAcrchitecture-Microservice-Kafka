@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: micro-service-kafka-order-service 
-          image: officialrashid/micro-service-kafka-order-service:v4
+          image: officialrashid/micro-service-kafka-order-service:v11
         
           
 ---
