@@ -8,7 +8,6 @@ export const handleMessage = async (data, type) => {
     try {
         if (type === "orderedProducts") {
             const response = await createOrder(data.products, data.userId, data.address, orderDbRepository);
-            console.log("response in handle message", response);
             return response;
         }
     } catch (error) {

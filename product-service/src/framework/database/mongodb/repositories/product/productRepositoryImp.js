@@ -1,6 +1,6 @@
 
 import productDatas from "../../../mongodb/models/productModels/productModels.js";
-import {productProducer} from "../../../../../event/productProducer.js"
+import { productProducer } from "../../../../../event/productProducer.js"
 const productRepositoryImp = () => {
   const addedProduct = async (productData) => {
     try {
@@ -19,47 +19,47 @@ const productRepositoryImp = () => {
     }
   };
 
-  
-const orderedProducts = async (productId, userId, address) => {
-  try {
-      console.log(productId, userId, address, "user implement buy products");
+  //create order
+  const orderedProducts = async (productId, userId, address) => {
+    try {
       const products = await productDatas.find({ _id: { $in: productId } });
-      console.log(products, "ppppppppppppppppp");
       let orderData = {
-          products,
-          userId,
-          address
+        products,
+        userId,
+        address
       };
       console.log(orderData);
 
       // Call the productProducer function and await its response
+
       await productProducer(orderData, 'order', 'orderedProducts');
       return orderData
-  // Return the response from orderedProducts
-  } catch (error) {
+      // Return the response from orderedProducts
+    } catch (error) {
       console.error("Error in orderedProducts:", error);
       throw error; // Throw the error to be caught by the caller
-  }
-};
-  const getProducts = async() =>{
-      
-    try{
+    }
+  };
+
+
+  const getProducts = async () => {
+
+    try {
       const products = await productDatas.find();
       return products;
-    } catch(error){
+    } catch (error) {
       console.error("Error in getProducts:", error);
       throw error;
     }
   }
-  const productDetails = async (productId) =>{
-      
-    try{
-        
-      const product = await productDatas.findOne({_id:productId})
-      console.log(product,"kittitittitiitiitit");
+  const productDetails = async (productId) => {
+
+    try {
+
+      const product = await productDatas.findOne({ _id: productId })
       return product
-    } catch(error){
-      console.log(error,"error in the productDetails query");
+    } catch (error) {
+      console.log(error, "error in the productDetails query");
     }
   }
   return {
@@ -67,7 +67,7 @@ const orderedProducts = async (productId, userId, address) => {
     orderedProducts,
     getProducts,
     productDetails,
-    
+
   };
 };
 

@@ -1,20 +1,15 @@
 
-import {kafka} from "../config/kafkaClient.js"
+import { kafka } from "../config/kafkaClient.js"
 
 
 const producer = kafka.producer()
 
-export const orderProducer = async (sendData,topic,type)=>{
-    console.log(sendData);
-    console.log(topic,"sdbfsbjhf");
-    console.log(type),"sjsjhhjvhsv";
-
-    try{
-        if(!sendData){
-            throw new Error ("Invalid Send Data")
+export const orderProducer = async (sendData, topic, type) => {
+    try {
+        if (!sendData) {
+            throw new Error("Invalid Send Data")
         }
         await producer.connect()
-        console.log(sendData,"sendData coming in the producer");
         const messagePayload = {
             type: type,
             data: sendData // Your actual data here
@@ -28,9 +23,9 @@ export const orderProducer = async (sendData,topic,type)=>{
             throw new Error('Message production failed')
         }
 
-    } catch(err){
-        console.log(err,"err in the product producer");
-    } finally{
+    } catch (err) {
+        console.log(err, "err in the product producer");
+    } finally {
         await producer.disconnect()
     }
 }

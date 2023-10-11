@@ -2,7 +2,7 @@
 
 import { kafka } from "../config/kafkaClient.js";
 
-// import { handleMessage } from "../event/handleMessages.js";
+// imposrt { handleMessage } from "../event/handleMessages.js";
 // import {orderProducer} from "../event/orderProducer.js"
 const consumer = kafka.consumer({
     groupId: 'product-service'

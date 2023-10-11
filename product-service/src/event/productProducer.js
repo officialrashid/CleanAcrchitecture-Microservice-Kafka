@@ -5,15 +5,14 @@ import {kafka} from "../config/kafkaClient.js"
 const producer = kafka.producer()
 
 export const productProducer = async (sendData,topic,type)=>{
-    console.log("bsdbvnvsbvsvhvhsvh");
- console.log(sendData,"coming the producer");
+  
     try{
         if(!sendData){
-            console.log("xbvmnxmvxvmxvhbfdbgdfgbdfhjgbdfgjdfgdfjgjhdjgdfhjgdhvdfg");
+            
             throw new Error ("Invalid Send Data")
         }
         await producer.connect(console.log("conneted to produce"));
-        console.log(sendData,"sendData coming in the producer");
+    
         const messagePayload = {
             type: type,
             data: sendData // Your actual hjhdata here

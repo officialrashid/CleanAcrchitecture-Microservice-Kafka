@@ -1,9 +1,9 @@
 const productDetails = async (productId, repositories, productService) => {
     try {
         const response = await repositories.productDetails(productId);
-        
+
         if (response) {
-            console.log(response, "response in usecase ethi makkaleeee");
+
             return { status: true, product: response };
         }
     } catch (error) {

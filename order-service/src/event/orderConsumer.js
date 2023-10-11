@@ -1,6 +1,6 @@
 import { kafka } from "../config/kafkaClient.js";
 import { handleMessage } from "../event/handleMessages.js";
-import {orderProducer} from "../event/orderProducer.js"
+import { orderProducer } from "../event/orderProducer.js"
 const consumer = kafka.consumer({
     groupId: 'order-service'
 });
@@ -14,25 +14,17 @@ export const consumeOrder = async () => {
         await consumer.subscribe({ topic: 'order', fromBeginning: true });
         await consumer.run({
             eachMessage: async ({ message }) => {
-                console.log(message, "ooooooooooooooooooooo");
-                console.log(message.value, "ooooooooooooooooooooo1111111111111");
+
                 const binaryData = message.value;
                 const jsonString = binaryData.toString(); // Convert binary data to a string
-                console.log(jsonString, "after convert to string");
-                const jsonData = JSON.parse(jsonString); // Parse the string as JSON
-                console.log("Received JSON data:", jsonData.data);
-
+                const jsonData = JSON.parse(jsonString); // Parse the string as JSOn
                 const messageType = jsonData.type;
-                console.log("Received message type:", messageType);
 
                 // Call handleMessage and wait for it to complete
-                const response = await handleMessage(jsonData.data, messageType);
-
-                console.log("response in handle message", response);
-
+                const response = await handleMessage(jsonData.data, messageType)
                 // Further processing or logging based on the response
                 if (response) {
-                    await orderProducer(response,'product','successOrdered')
+                    await orderProducer(response, 'product', 'successOrdered')
                 }
             }
         });

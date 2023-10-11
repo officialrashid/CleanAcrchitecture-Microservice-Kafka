@@ -1,11 +1,9 @@
 import orderData from "../../models/orderModels/orderModels.js";
 
 const orderRepositoryImp = () => {
+
   const createOrder = async (products, userId, address, total) => {
-    console.log(total, ";;;;;;;;;");
-    console.log(userId, "userid in implements");
-    console.log(products, "products in implementsssss");
-    console.log(address, "address in implementsssss");
+
 
     const newOrder = new orderData({
       products,
